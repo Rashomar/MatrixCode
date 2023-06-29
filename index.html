@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin:0;
+            padding:0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+
+        let fps = 34;
+        let lastTime = 0;
+
+        let hiragana = "あいうえおかきくけこさしすせそたちつてとなにぬ	ねのはひふ	へほまみむめもら	りるれろやゆよわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイウエオカクケコサシスセソタチツテトナニヌネノ";
+        hiragana.split("");
+
+        let fontSize = 11;
+        let columns = canvas.width/fontSize;
+        let drops = [];
+
+        for(let i=0; i<columns; i++){
+            drops[i] = 1;
+        }
+
+        function draw(time){
+            requestAnimationFrame(draw);
+            if(time - lastTime >= 1000/fps){
+                lastTime = time;
+                ctx.fillStyle ="rgba(0,0,0,0.05)";
+                ctx.fillRect(0,0,canvas.width, canvas.height);
+                ctx.fillStyle = "lime";
+                ctx.font = fontSize + "px";
+
+                for(let i=0; i<drops.length; i++){
+                    let text = hiragana[Math.floor(Math.random() * hiragana.length)];
+                    ctx.fillText(text,fontSize * i , fontSize * drops[i]);
+                    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975){
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+
+            }
+        }
+
+        draw();
+    </script>
+</body>
+</html>
